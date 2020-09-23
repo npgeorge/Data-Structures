@@ -66,7 +66,19 @@ class DoublyLinkedList:
     the old tail node's next pointer accordingly.
     """
     def add_to_tail(self, value):
-        pass
+        # create new_node
+        new_node = ListNode(value)
+        # 1. add to empty
+        if self.head is None:
+            self.head = new_node
+            self.tail = new_node
+        # 2. add to non empty
+        else:
+            new_node.prev = self.tail
+            self.tail.next = new_node
+            self.tail = new_node
+
+        self.length += 1
             
     """
     Removes the List's current tail node, making the 
@@ -74,7 +86,13 @@ class DoublyLinkedList:
     Returns the value of the removed Node.
     """
     def remove_from_tail(self):
-        pass
+        # save value to return
+        value = self.tail.value
+        
+        # use built in delete method
+        self.delete(self.tail)
+
+        return value
             
     """
     Removes the input node from its current spot in the 
@@ -84,7 +102,6 @@ class DoublyLinkedList:
         # if node is just the head, return just that
         if node is self.head:
             return
-        
         # 1. delete it from current spot
         self.delete(node)
         # 2. add_to_head()
@@ -96,7 +113,13 @@ class DoublyLinkedList:
     List and inserts it as the new tail node of the List.
     """
     def move_to_end(self, node):
-        pass
+        # if node is just the tail, return just that
+        if node is self.tail:
+            return
+        # 1. delete it from current spot
+        self.delete(node)
+        # 2. add_to_tail()
+        self.add_to_tail(node.value)
 
     """
     Deletes the input node from the List, preserving the 
@@ -120,6 +143,8 @@ class DoublyLinkedList:
             node.delete()
         else:
             node.delete()
+        
+        self.length -= 1
 
     """
     Finds and returns the maximum value of all the nodes 
@@ -133,7 +158,7 @@ class DoublyLinkedList:
         
         # keep track of current node & max
         cur_node = self.head
-        max = self.head.value
+        max_value = self.head.value
 
         # loop through our dll
         while cur_node:     # while cur_node is not None
